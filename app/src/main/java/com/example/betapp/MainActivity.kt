@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.loginButton.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+        binding.testButton.setOnClickListener{
+            startActivity(Intent(this, UpcomingGamesActivity::class.java))
         }
 
         binding.logOutButton.setOnClickListener{
