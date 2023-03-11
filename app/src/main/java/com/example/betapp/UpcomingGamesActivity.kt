@@ -2,12 +2,11 @@ package com.example.betapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.betapp.databinding.ActivityUpcomingGamesBinding
-import com.example.betapp.games.GameAdapter
-import com.example.betapp.games.GameViewModel
+import com.example.betapp.game.GameAdapter
+import com.example.betapp.game.GameViewModel
 
 class UpcomingGamesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUpcomingGamesBinding

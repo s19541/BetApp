@@ -1,4 +1,4 @@
-package com.example.betapp.games
+package com.example.betapp.game
 
 import java.time.LocalDateTime
 
@@ -12,4 +12,4 @@ data class Game(
     var competition: String,
     var dateTime: LocalDateTime
 
-)
+) : java.io.Serializable

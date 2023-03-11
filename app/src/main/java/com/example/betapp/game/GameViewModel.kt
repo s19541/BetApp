@@ -1,4 +1,4 @@
-package com.example.betapp.games
+package com.example.betapp.game
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

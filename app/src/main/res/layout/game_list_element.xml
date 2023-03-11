@@ -62,7 +62,7 @@
             android:src="@drawable/chelsea"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/manchester_city" />
+            app:srcCompat="@drawable/man_city" />
 
         <TextView
             android:id="@+id/textViewTeam1"
@@ -110,7 +110,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:src="@drawable/tottenham_hotspur"
+            android:src="@drawable/tottenham"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/arsenal" />

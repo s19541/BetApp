@@ -1,4 +1,4 @@
-package com.example.betapp.games
+package com.example.betapp.game
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.ChildEventListener
