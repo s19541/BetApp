@@ -24,6 +24,8 @@ class NewBetActivity : AppCompatActivity() {
 
         val game = intent.extras?.get("game") as Game
 
+        binding.chipWin.isChecked = true
+
         binding.textViewTeam1.text = game.team1
         binding.textViewTeam2.text = game.team2
         binding.textViewDateTime.text = game.dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
@@ -36,23 +38,24 @@ class NewBetActivity : AppCompatActivity() {
         binding.chipLoss.text = game.rateLoss.toString()
 
         binding.buttonBet.setOnClickListener{
-            if(binding.chipGroup.checkedChipId != null && binding.editTextInput.text.toString().toIntOrNull() != null){
+            if(binding.editTextInput.text.toString().toDoubleOrNull() ?: 0.0 > 0){
                 val betViewModel = BetViewModel(application)
                 var rate: Double
                 var result: Result
                 if(binding.chipWin.isChecked) {
                     rate = binding.chipWin.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.W
+                    result = Result.WIN
                 }
                 else if(binding.chipDraw.isChecked){
                     rate = binding.chipDraw.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.D
+                    result = Result.DRAW
                 }
                 else{
                     rate = binding.chipLoss.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.L
+                    result = Result.LOSS
                 }
                 CoroutineScope(Dispatchers.IO).launch {
+
                     betViewModel.insert(
                         Bet(
                             id = "",
@@ -63,6 +66,7 @@ class NewBetActivity : AppCompatActivity() {
                             settled = false
                         )
                     )
+                    finish()
                 }
             }
             else {

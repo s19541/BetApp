@@ -9,7 +9,7 @@ data class Game(
     var rateWin: Double,
     var rateDraw: Double,
     var rateLoss: Double,
-    var competition: String,
+    var round: String,
     var dateTime: LocalDateTime
 
 ) : java.io.Serializable

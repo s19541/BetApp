@@ -1,10 +1,13 @@
 package com.example.betapp.game
 
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.snapshots
+import kotlinx.coroutines.flow.first
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -15,7 +18,7 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
         }
 
     init{
-        fbdb.getReference("Game").addChildEventListener(
+        fbdb.getReference("games").addChildEventListener(
             object: ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -26,7 +29,7 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
                         rateWin = snapshot.child("rateWin").getValue(Double::class.java)!!,
                         rateDraw = snapshot.child("rateDraw").getValue(Double::class.java)!!,
                         rateLoss = snapshot.child("rateLoss").getValue(Double::class.java)!!,
-                        competition = snapshot.child("competition").getValue(String::class.java)!!,
+                        round = snapshot.child("round").getValue(String::class.java)!!,
                         dateTime = LocalDateTime.parse(snapshot.child("dateTime").getValue(String::class.java), pattern)!!
                     )
                     allGames.value?.put(game.id, game)
@@ -41,7 +44,7 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
                         rateWin = snapshot.child("rateWin").getValue(Double::class.java)!!,
                         rateDraw = snapshot.child("rateDraw").getValue(Double::class.java)!!,
                         rateLoss = snapshot.child("rateLoss").getValue(Double::class.java)!!,
-                        competition = snapshot.child("competition").getValue(String::class.java)!!,
+                        round = snapshot.child("round").getValue(String::class.java)!!,
                         dateTime = snapshot.child("dateTime").getValue(LocalDateTime::class.java)!!
                     )
                     allGames.value?.put(game.id, game)
@@ -58,8 +61,8 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             }
+
         )
     }
 }

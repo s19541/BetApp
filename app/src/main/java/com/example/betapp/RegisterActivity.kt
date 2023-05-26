@@ -4,9 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.betapp.bet.BetViewModel
 
 import com.example.betapp.databinding.ActivityRegisterBinding
+import com.example.betapp.userData.UserData
+import com.example.betapp.userData.UserDataViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -43,6 +49,18 @@ class RegisterActivity : AppCompatActivity() {
                             email,
                             password,
                         )
+                        val userDataViewModel = UserDataViewModel(application)
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            userDataViewModel.insert(
+                                UserData(
+                                    id = "",
+                                    points = 50.0,
+                                    firstname = "",
+                                    surname = ""
+                                )
+                            )
+                        }
                         startActivity(Intent(this, MainActivity::class.java))
                         this.finish()
                     }

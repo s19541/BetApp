@@ -25,7 +25,7 @@ class UpcomingGamesActivity : AppCompatActivity() {
         binding.gamesRv.adapter = adapter
         gameViewModel.allGames.observe(this, androidx.lifecycle.Observer {
             it.let{
-                adapter.setGames(it.values.toList())
+                adapter.setGames(it.values.toList().sortedWith(compareBy { it2 -> it2.dateTime }))
             }
         })
 

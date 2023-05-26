@@ -21,6 +21,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, UpcomingGamesActivity::class.java))
         }
 
+        binding.testButton2.setOnClickListener{
+            startActivity(Intent(this, UserBetsActivity::class.java))
+        }
+
         binding.logOutButton.setOnClickListener{
             auth.signOut()
             startActivity(Intent(this, LoginActivity::class.java))
