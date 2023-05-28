@@ -26,6 +26,7 @@ class BetRepository(private val fbdb: FirebaseDatabase, private val user: Fireba
                         result = snapshot.child("result").getValue(Result::class.java)!!,
                         input = snapshot.child("input").getValue(Double::class.java)!!,
                         settled = snapshot.child("settled").getValue(Boolean::class.java)!!,
+                        output = snapshot.child("output").getValue(Double::class.java)!!,
                     )
                     allBets.value?.put(bet.id, bet)
                     allBets.postValue(allBets.value)
@@ -39,6 +40,7 @@ class BetRepository(private val fbdb: FirebaseDatabase, private val user: Fireba
                         result = snapshot.child("result").getValue(Result::class.java)!!,
                         input = snapshot.child("input").getValue(Double::class.java)!!,
                         settled = snapshot.child("settled").getValue(Boolean::class.java)!!,
+                        output = snapshot.child("output").getValue(Double::class.java)!!,
                     )
                     allBets.value?.set(bet.id, bet)
                     allBets.postValue(allBets.value)

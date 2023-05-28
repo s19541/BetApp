@@ -1,5 +1,6 @@
 package com.example.betapp.userData
 import androidx.lifecycle.MutableLiveData
+import com.example.betapp.game.Game
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -8,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 class UserDataRepository(private val fbdb: FirebaseDatabase, private val user: FirebaseUser) {
 
-    var userData: MutableLiveData<UserData> = MutableLiveData<UserData>(null)
+    var userData: MutableLiveData<UserData> = MutableLiveData<UserData>()
 
     init{
         fbdb.getReference("userData/" + user.uid).addChildEventListener(

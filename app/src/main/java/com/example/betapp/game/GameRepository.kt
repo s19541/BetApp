@@ -17,9 +17,9 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
             it.value = HashMap<String, Game>()
         }
 
-    init{
+    init {
         fbdb.getReference("games").addChildEventListener(
-            object: ChildEventListener {
+            object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val game = Game(
@@ -30,7 +30,9 @@ class GameRepository(private val fbdb: FirebaseDatabase) {
                         rateDraw = snapshot.child("rateDraw").getValue(Double::class.java)!!,
                         rateLoss = snapshot.child("rateLoss").getValue(Double::class.java)!!,
                         round = snapshot.child("round").getValue(String::class.java)!!,
-                        dateTime = LocalDateTime.parse(snapshot.child("dateTime").getValue(String::class.java), pattern)!!
+                        dateTime = LocalDateTime.parse(
+                            snapshot.child("dateTime").getValue(String::class.java), pattern
+                        )!!
                     )
                     allGames.value?.put(game.id, game)
                     allGames.postValue(allGames.value)

@@ -6,5 +6,6 @@ data class Bet(
     var rate: Double,
     var result: Result,
     var input: Double,
-    var settled: Boolean
+    var settled: Boolean,
+    var output: Double
 )

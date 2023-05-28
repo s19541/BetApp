@@ -1,13 +1,19 @@
 package com.example.betapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.example.betapp.bet.Bet
 import com.example.betapp.bet.BetViewModel
 import com.example.betapp.bet.Result
 import com.example.betapp.databinding.ActivityNewBetBinding
 import com.example.betapp.game.Game
+import com.example.betapp.userData.UserData
+import com.example.betapp.userData.UserDataViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,11 +22,25 @@ import java.time.format.DateTimeFormatter
 class NewBetActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewBetBinding
+    private val auth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityNewBetBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var userData = UserData("", 0.0, "","")
+
+        if(auth.currentUser != null){
+            val userDataViewModel = UserDataViewModel(application)
+            if(auth.currentUser != null)
+                userDataViewModel.userData.observe(this, androidx.lifecycle.Observer {
+                    it.let{
+                        userData = it
+                        supportActionBar?.subtitle = "Current points: ${userData.points}"
+                    }
+                })
+        }
 
         val game = intent.extras?.get("game") as Game
 
@@ -38,35 +58,45 @@ class NewBetActivity : AppCompatActivity() {
         binding.chipLoss.text = game.rateLoss.toString()
 
         binding.buttonBet.setOnClickListener{
-            if(binding.editTextInput.text.toString().toDoubleOrNull() ?: 0.0 > 0){
-                val betViewModel = BetViewModel(application)
-                var rate: Double
-                var result: Result
-                if(binding.chipWin.isChecked) {
-                    rate = binding.chipWin.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.WIN
+            val input = binding.editTextInput.text.toString().toDoubleOrNull() ?: 0.0
+            if(input > 0){
+                if(input > userData.points){
+                    Toast.makeText(this, "You don't have enough points", Toast.LENGTH_LONG).show()
                 }
-                else if(binding.chipDraw.isChecked){
-                    rate = binding.chipDraw.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.DRAW
-                }
-                else{
-                    rate = binding.chipLoss.text.toString().toDoubleOrNull() ?: 0.0
-                    result = Result.LOSS
-                }
-                CoroutineScope(Dispatchers.IO).launch {
+                else {
+                    val betViewModel = BetViewModel(application)
+                    val userDataViewModel = UserDataViewModel(application)
+                    var rate: Double
+                    var result: Result
+                    if (binding.chipWin.isChecked) {
+                        rate = binding.chipWin.text.toString().toDoubleOrNull() ?: 0.0
+                        result = Result.WIN
+                    } else if (binding.chipDraw.isChecked) {
+                        rate = binding.chipDraw.text.toString().toDoubleOrNull() ?: 0.0
+                        result = Result.DRAW
+                    } else {
+                        rate = binding.chipLoss.text.toString().toDoubleOrNull() ?: 0.0
+                        result = Result.LOSS
+                    }
+                    userData.points = userData.points - input
 
-                    betViewModel.insert(
-                        Bet(
-                            id = "",
-                            gameId = game.id,
-                            rate = rate,
-                            result = result,
-                            input = binding.editTextInput.text.toString().toDoubleOrNull() ?: 0.0,
-                            settled = false
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        userDataViewModel.update(userData)
+
+                        betViewModel.insert(
+                            Bet(
+                                id = "",
+                                gameId = game.id,
+                                rate = rate,
+                                result = result,
+                                input = input,
+                                settled = false,
+                                output = 0.0
+                            )
                         )
-                    )
-                    finish()
+                        finish()
+                    }
                 }
             }
             else {
@@ -75,4 +105,17 @@ class NewBetActivity : AppCompatActivity() {
 
         }
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.custom_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.logoutMenu){
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        return true
+    }
+
 }

@@ -6,19 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/logOutButton"
-        android:layout_width="118dp"
-        android:layout_height="121dp"
-        android:backgroundTint="#00B58787"
-        android:contentDescription="Log out button"
-        android:cropToPadding="false"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_logout"
+    <Button
+        android:id="@+id/testButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:text="TEST 3"
+        app:layout_constraintBottom_toTopOf="@+id/testButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RedundantDescriptionCheck" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"

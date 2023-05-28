@@ -5,24 +5,27 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.betapp.bet.BetAdapter
+import com.example.betapp.bet.BetHistoryAdapter
 import com.example.betapp.bet.BetViewModel
 import com.example.betapp.databinding.ActivityUserBetsBinding
+import com.example.betapp.databinding.ActivityUserBetsHistoryBinding
 import com.example.betapp.game.GameViewModel
 import com.example.betapp.userData.UserDataViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 
-class UserBetsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUserBetsBinding
+class UserBetsHistoryActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUserBetsHistoryBinding
     private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityUserBetsBinding.inflate(layoutInflater)
+        binding = ActivityUserBetsHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if(auth.currentUser != null){
@@ -39,17 +42,18 @@ class UserBetsActivity : AppCompatActivity() {
         val betViewModel = BetViewModel(application)
         val gameViewModel = GameViewModel(application)
 
-        val adapter = BetAdapter()
+        val adapter = BetHistoryAdapter()
 
-        binding.betsRv.layoutManager = LinearLayoutManager(this)
-        binding.betsRv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        binding.betsRv.adapter = adapter
+        binding.betsHistoryRv.layoutManager = LinearLayoutManager(this)
+        binding.betsHistoryRv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.betsHistoryRv.adapter = adapter
 
         betViewModel.allBets.observe(this, androidx.lifecycle.Observer {
             it.let{
-                adapter.setBets(it.values.toList().filter{ x -> !x.settled})
+                adapter.setBets(it.values.toList().filter{ x -> x.settled})
             }
         })
+
         gameViewModel.allGames.observe(this, androidx.lifecycle.Observer {
             it.let{
                 adapter.setGames(it.values.toList())

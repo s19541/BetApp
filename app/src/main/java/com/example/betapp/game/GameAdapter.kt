@@ -12,7 +12,7 @@ import com.example.betapp.NewBetActivity
 import com.example.betapp.databinding.GameListElementBinding
 import java.time.format.DateTimeFormatter
 
-class GameAdapter(private val gameViewModel: GameViewModel) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class GameAdapter : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
     class ViewHolder(val binding: GameListElementBinding) : RecyclerView.ViewHolder(binding.root)
 
     private var games = emptyList<Game>()
